@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 40% 5%;
+    --foreground: 210 20% 98%;
+    --card: 223 23% 16%;
+    --card-foreground: 210 20% 98%;
+    --popover: 220 23% 11%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 216 12% 74%;
+    --accent: 215 28% 22%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 217 32% 22%;
+    --input: 217 32% 17%;
+    --ring: 217 91% 60%;
+    --radius: 0.5rem;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+
+  .dark {
+    --background: 220 40% 5%;
+    --foreground: 210 20% 98%;
+    --card: 223 23% 13%;
+    --card-foreground: 210 20% 98%;
+    --popover: 220 23% 11%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 216 12% 74%;
+    --accent: 215 28% 22%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 217 32% 27%;
+    --input: 217 32% 17%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  body.dark {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iMjUwIj4NCiAgPGcgaWQ9ImxpbmVzIj4NCiAgICA8bGluZSB4MT0iMCIgeTE9IjIwNCIgeDI9IjI1MCIgeTI9IjIwNCIgc3Ryb2tlPSJoc2woMjE3IDkxJSA2MCUgLyAwLjA3KSIgc3Ryb2tlLXdpZHRoPSIyIiAvPg0KICAgIDxsaW5lIHgxPSIwIiB5MT0iMjAyIiAyPSIxNTAiIHkyPSIyMDIiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iNCIgeTE9IjE5MCIgeDI9IjUwIiB5Mj0iMTkwIiBzdHJva2U9ImhzbCgyMTcgOTElIDYwJSAvIDAuMDcpIiBzdHJva2Utd2lkdGg9IjIiIC8+DQogICAgPGxpbmUgeDE9IjYwIiB5MT0iMTkwIiAyPSIxNDAiIHkyPSIxOTAiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS1wdWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMTUwIiB5MT0iMTkwIiAyPSIyNTAiIHkyPSIxOTAiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjAzIiB5MT0iMTg1IiAyPSIyMDMiIHkyPSIxMjUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjA4IiB5MT0iMTg1IiAyPSIyMDgiIHkyPSIxMDUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjEzIiB5MT0iMTg1IiAyPSIyMTMiIHkyPSIxNTUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjE4IiB5MT0iMTg1IiAyPSIyMTgiIHkyPSIxMjUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjIzIiB5MT0iMTg1IiAyPSIyMjMiIHkyPSIxNDUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjI4IiB5MT0iMTg1IiAyPSIyMjgiIHkyPSIxNTUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgICA8bGluZSB4MT0iMjMzIiB5MT0iMTg1IiAyPSIzMzMiIHkyPSIxNDUiIHN0cm9rZT0iaHNsKDIxNyA5MSUgNjAlIC8gMC4wNykiIHN0cm9rZS13aWR0aD0iMiIgLz4NCiAgPC9nPg0KPC9zdmc+');
+  }
+}

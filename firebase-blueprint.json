@@ -1,0 +1,166 @@
+
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Represents a user's profile in the system.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The user's unique ID from Firebase Auth (same as document ID)."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role in the system.",
+          "enum": [
+            "Student",
+            "Teacher",
+            "Staff",
+            "Admin",
+            "Primary Custodian"
+          ]
+        },
+        "idNumber": {
+          "type": "string",
+          "description": "Student's ID number."
+        },
+        "educationLevel": {
+          "type": "string",
+          "description": "Student's education level (college or shs)."
+        },
+        "courseOrStrand": {
+          "type": "string",
+          "description": "Student's course or strand."
+        },
+        "yearLevel": {
+          "type": "string",
+          "description": "Student's year level."
+        },
+        "department": {
+          "type": "string",
+          "description": "The department the user belongs to (for non-students)."
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "The employee ID for the user (for non-students)."
+        },
+        "passwordChangeRequired": {
+          "type": "boolean",
+          "description": "If true, the user must change their password on next login."
+        }
+      },
+      "required": ["id", "displayName", "email", "role"]
+    },
+    "InventoryItem": {
+      "title": "Inventory Item",
+      "description": "Represents an item in the laboratory inventory.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "channelId": { "type": "string" },
+        "status": { "type": "string", "enum": ["Available", "Locked", "Borrowed"] },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "quantity": { "type": "number" }
+      },
+      "required": ["name", "channelId", "status", "quantity", "description", "imageUrl", "imageHint"]
+    },
+    "BorrowHistory": {
+      "title": "Borrow History",
+      "description": "Represents a single borrowing transaction or request.",
+      "type": "object",
+      "properties": {
+        "studentName": { "type": "string" },
+        "itemName": { "type": "string" },
+        "itemQuantity": { "type": "number", "description": "The quantity of the item being borrowed or reserved." },
+        "date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["Pending", "Approved", "Denied", "Active", "Returned", "Pending Return", "Cancelled", "Reserved"] },
+        "teacherId": { "type": "string" },
+        "checkoutSessionId": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "borrowerUserId": { "type": "string" },
+        "reservationId": { "type": "string", "description": "A unique ID to group multiple items under a single reservation." }
+      },
+      "required": ["studentName", "itemName", "date", "status", "borrowerUserId"]
+    },
+    "RoleFlag": {
+      "title": "Role Flag",
+      "description": "A document whose existence grants a user a specific role.",
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "assignedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "role",
+        "assignedAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Stores public user profile information."
+    },
+    "/inventory_items/{itemId}": {
+      "schema": {
+        "$ref": "#/entities/InventoryItem"
+      },
+      "description": "Stores all inventory items for all labs."
+    },
+    "/borrowing_transactions/{transactionId}": {
+      "schema": {
+        "$ref": "#/entities/BorrowHistory"
+      },
+      "description": "Stores all borrowing transactions and requests."
+    },
+    "/roles_teachers/{userId}": {
+      "schema": {
+        "$ref": "#/entities/RoleFlag"
+      },
+      "description": "Grants a user the 'Teacher' role."
+    },
+    "/roles_staff/{userId}": {
+      "schema": {
+        "$ref": "#/entities/RoleFlag"
+      },
+      "description": "Grants a user the 'Staff' role."
+    },
+    "/roles_admin/{userId}": {
+      "schema": {
+        "$ref": "#/entities/RoleFlag"
+      },
+      "description": "Grants a user the 'Admin' role."
+    },
+    "/roles_primary_custodian/{userId}": {
+      "schema": {
+        "$ref": "#/entities/RoleFlag"
+      },
+      "description": "Grants a user the 'Primary Custodian' role."
+    }
+  }
+}

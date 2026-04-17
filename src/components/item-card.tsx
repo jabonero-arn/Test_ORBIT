@@ -1,0 +1,127 @@
+import Image from "next/image"
+import type { InventoryItem } from "@/lib/types"
+import { Card } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { CheckCircle, Lock, Minus, Plus, Hourglass } from "lucide-react"
+import { Button } from "./ui/button"
+import { Badge } from "./ui/badge"
+
+type ItemCardProps = {
+  item: InventoryItem
+  onSelect: () => void
+  isSelected: boolean
+  isPending?: boolean
+  isApproved?: boolean
+  isTeacherView?: boolean
+  isSelectionEnabled?: boolean
+  isManagementView?: boolean
+  onQuantityChange?: (itemId: string, newQuantity: number) => void
+}
+
+export function ItemCard({ 
+    item, 
+    onSelect, 
+    isSelected, 
+    isPending,
+    isApproved, 
+    isTeacherView = false, 
+    isSelectionEnabled = true, 
+    isManagementView = false, 
+    onQuantityChange 
+}: ItemCardProps) {
+  
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isManagementView) {
+      // In management view, the card isn't for selection.
+      return;
+    }
+    // Allow selection if not 'Borrowed', OR if 'Borrowed' but has quantity (handles data inconsistency)
+    if (isSelectionEnabled && (item.status !== 'Borrowed' || item.quantity > 0) && !isPending) {
+      onSelect();
+    }
+  };
+
+  const showPending = isPending && !isApproved && !isTeacherView && !isManagementView;
+  const showApproved = isApproved && !isTeacherView && !isManagementView;
+
+  return (
+    <Card 
+      onClick={handleCardClick}
+      className={cn(
+        "flex flex-col overflow-hidden transition-all duration-200 bg-card/80 backdrop-blur-sm group h-full",
+        (isSelectionEnabled && (item.status !== 'Borrowed' || item.quantity > 0) && !isManagementView && !isPending) && "cursor-pointer",
+        isSelected && isSelectionEnabled ? "border-primary shadow-lg shadow-primary/20" : "hover:border-primary/50 hover:shadow-md",
+        ((item.status === "Borrowed" && item.quantity === 0) || isPending) && isSelectionEnabled && !isManagementView && "cursor-not-allowed"
+      )}
+    >
+      <div className="relative aspect-video overflow-hidden">
+        <Image
+          src={item.imageUrl}
+          alt={item.name}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          data-ai-hint={item.imageHint}
+        />
+        {isSelected && isSelectionEnabled && !isManagementView && (
+          <div className="absolute inset-0 bg-primary/70 flex items-center justify-center">
+            <CheckCircle className="h-12 w-12 text-primary-foreground" />
+          </div>
+        )}
+         {showPending && (
+          <div className="absolute inset-0 bg-amber-900/50 flex items-center justify-center">
+             <Hourglass className="h-12 w-12 text-amber-300 animate-spin" />
+          </div>
+        )}
+        {showApproved && (
+           <div className="absolute inset-0 bg-green-900/50 flex items-center justify-center">
+             <CheckCircle className="h-12 w-12 text-green-300" />
+          </div>
+        )}
+
+
+        {item.status === 'Borrowed' && item.quantity === 0 && <Badge variant="destructive" className="absolute top-2 left-2">Borrowed</Badge>}
+        
+        {showPending && (
+            <Badge variant="outline" className="absolute top-2 left-2 bg-amber-500/20 border-amber-500 text-amber-300 flex items-center">
+                <Hourglass className="mr-1 h-3 w-3"/>Pending
+            </Badge>
+        )}
+        
+        {showApproved && (
+            <Badge variant="outline" className="absolute top-2 left-2 bg-green-600/20 border-green-600 text-green-300 flex items-center">
+                <CheckCircle className="mr-1 h-3 w-3"/>Pending
+            </Badge>
+        )}
+
+        {item.status === 'Locked' && !isPending && !isApproved && !isTeacherView && !isManagementView && (
+            <Badge variant="secondary" className="absolute top-2 left-2 flex items-center">
+                <Lock className="mr-1 h-3 w-3"/>Locked
+            </Badge>
+        )}
+
+      </div>
+      <div className="flex flex-1 flex-col p-3">
+        <div className="flex-1">
+          <h3 className="font-semibold text-base leading-tight truncate" title={item.name}>
+              {item.name}
+          </h3>
+          {!isManagementView && <p className="text-xs text-muted-foreground mt-1">Qty: {item.quantity}</p>}
+          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+            {item.description}
+          </p>
+        </div>
+        {isManagementView && onQuantityChange && (
+            <div className="flex items-center justify-between mt-4">
+                <Button size="icon" variant="outline" className="h-8 w-8 rounded-full" onClick={(e) => { e.stopPropagation(); onQuantityChange(item.id, item.quantity - 1); }} disabled={item.quantity <= 0}>
+                    <Minus className="h-4 w-4" />
+                </Button>
+                <span className="font-bold text-lg w-10 text-center select-none">{item.quantity}</span>
+                <Button size="icon" variant="outline" className="h-8 w-8 rounded-full" onClick={(e) => { e.stopPropagation(); onQuantityChange(item.id, item.quantity + 1); }}>
+                    <Plus className="h-4 w-4" />
+                </Button>
+            </div>
+        )}
+      </div>
+    </Card>
+  )
+}

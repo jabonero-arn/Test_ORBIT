@@ -1,0 +1,53 @@
+import type { InventoryItem } from "@/lib/types"
+import { ItemCard } from "@/components/item-card"
+
+type InventoryGridProps = {
+  items: InventoryItem[]
+  onItemSelect: (item: InventoryItem) => void
+  selectedItems: InventoryItem[]
+  isTeacherView?: boolean
+  isSelectionEnabled?: boolean
+  isManagementView?: boolean
+  onQuantityChange?: (itemId: string, newQuantity: number) => void
+  pendingRequestedItemNames?: string[]
+  approvedForBorrowItemNames?: string[]
+}
+
+export function InventoryGrid({ 
+    items, 
+    onItemSelect, 
+    selectedItems, 
+    isTeacherView, 
+    isSelectionEnabled = true, 
+    isManagementView, 
+    onQuantityChange, 
+    pendingRequestedItemNames = [],
+    approvedForBorrowItemNames = []
+}: InventoryGridProps) {
+  if (items.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center rounded-lg border-2 border-dashed border-border/50 bg-card/50 p-8 text-center text-muted-foreground">
+        <p>No items found in this laboratory.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 md:gap-6">
+      {items.map((item) => (
+        <ItemCard 
+            key={item.id} 
+            item={item} 
+            onSelect={() => onItemSelect(item)}
+            isSelected={selectedItems.some(si => si.id === item.id)}
+            isPending={pendingRequestedItemNames.includes(item.name)}
+            isApproved={approvedForBorrowItemNames.includes(item.name)}
+            isTeacherView={isTeacherView}
+            isSelectionEnabled={isSelectionEnabled}
+            isManagementView={isManagementView}
+            onQuantityChange={onQuantityChange}
+        />
+      ))}
+    </div>
+  )
+}
